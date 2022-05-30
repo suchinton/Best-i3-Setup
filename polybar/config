@@ -32,7 +32,7 @@ transparent = #00000000
 monitor-strict = false
 width = 1
 height = 25
-bottom = false
+bottom = flase
 
 ######### offset values only dtermine the position of bar in the screen set it accordingly to your need
 offset-x = 0 
@@ -58,8 +58,8 @@ modules-left =  sep
 
 tray-position = right
 tray-detached = true
-tray-offset-x = 1200
-#tray-offset-x = 1850
+#tray-offset-x = 1200
+tray-offset-x = 1650
 tray-offset-y = 30
 tray-padding = 10
 tray-maxsize = 20
@@ -93,7 +93,7 @@ padding-right = 2
 
 font-0 = fixed:pixelsize=10;1
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
-font-2 = SF Pro Rounded:pixelsize=10;1
+font-2 = SF Pro Display:pixelsize=10;1
 font-3 = JetBrainsMono Nerd Font:pixelsize=11;2
 font-4 = Noto Sans Regular: ;pixelsize = 10;3
 
@@ -116,7 +116,7 @@ cursor-scroll =
 
 [module/Settings]
 type = custom/menu
-label-open =   Settings
+label-open = 漣  Settings
 label-close = 
 label-separator = //
 label-separator-padding = 1
@@ -126,15 +126,18 @@ menu-0-0 =    Display
 menu-0-0-exec = #Settings.open.1
 menu-0-1 =     Wallpaper
 menu-0-1-exec = nitrogen
-menu-0-2 =  Dark
-menu-0-2-exec = wal -i "$(grep -m1 'file=' ./.config/nitrogen/bg-saved.cfg | sed 's/file=//' | xargs echo -n)" -n
-menu-0-3 =   Light
-menu-0-3-exec = wal -i "$(grep -m1 'file=' ./.config/nitrogen/bg-saved.cfg | sed 's/file=//' | xargs echo -n)" -n -l
+menu-0-2 = Theme
+menu-0-2-exec = #Settings.open.2
 
 menu-1-0 =    Single
 menu-1-0-exec = .screenlayout/Single_mon.sh
 menu-1-1 =    Milti
 menu-1-1-exec = .screenlayout/Multi_mon.sh
+
+menu-2-0 =  Dark
+menu-2-0-exec = wal -i "$(grep -m1 'file=' ./.config/nitrogen/bg-saved.cfg | sed 's/file=//' | xargs echo -n)" -n
+menu-2-1 =   Light
+menu-2-1-exec = wal -i "$(grep -m1 'file=' ./.config/nitrogen/bg-saved.cfg | sed 's/file=//' | xargs echo -n)" -n -l
 
 [module/xwindow]
 type = internal/xwindow
@@ -324,7 +327,7 @@ click-left = /home/suchinton/.config/i3/scripts/powermenu
 
 [module/power-set]
 type = custom/text
-content = " Power "
+content = "P-Profile"
 click-left = /home/suchinton/.config/i3/scripts/power-profiles
 
 [settings]
