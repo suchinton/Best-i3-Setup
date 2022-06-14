@@ -27,8 +27,14 @@ alert = ${xrdb:color3:#222}
 healthy = ${xrdb:color5:#222}
 transparent = #00000000 
 
+include-file = /home/suchintno/.config/polybar/modules.conf
+
+[section/base]
+monitor = ${env:MONITOR:eDP1}
+
 [bar/drop]
 
+inherit = section/base
 monitor-strict = false
 width = 1
 height = 25
@@ -36,17 +42,14 @@ bottom = flase
 
 ######### offset values only dtermine the position of bar in the screen set it accordingly to your need
 offset-x = 0 
-offset-y = 0   
+offset-y = 0  
 
-override-redirect = true  ############### to make offset vales to work override-direct value must be true
+override-redirect = true  
 
 fixed-center = true
-background = ${colors.transparent}
+background = ${colors.background}
 foreground = ${colors.foreground}
 radius = 5
-line-size = 0
-line-color = #f00
-
 
 padding-left = 90
 padding-right = 2
@@ -58,16 +61,18 @@ modules-left =  sep
 
 tray-position = right
 tray-detached = true
-#tray-offset-x = 1200
-tray-offset-x = 1650
-tray-offset-y = 30
+tray-offset-x = 1100
+#tray-offset-x = 1650
+tray-offset-y = 40
 tray-padding = 10
 tray-maxsize = 20
 tray-scale = 1.0
 tray-background = ${colors.background}
 
-[bar/example]
-;monitor = ${env:MONITOR:HDMI-1}
+[bar/Main]
+
+pin-workspaces = true
+inherit = section/base
 width = 100%
 height = 30
 ;offset-x = 1%
@@ -80,7 +85,7 @@ background = ${colors.background}
 foreground = ${colors.foreground}
 
 line-size = 0
-line-color = #f00
+line-color = ${colors.background-alt}
 
 border-size = 4
 border-color = #00000000
@@ -97,9 +102,54 @@ font-2 = SF Pro Display:pixelsize=10;1
 font-3 = JetBrainsMono Nerd Font:pixelsize=11;2
 font-4 = Noto Sans Regular: ;pixelsize = 10;3
 
-modules-left = appmenu sep i3 sep xwindow  
+modules-left = appmenu sep i3 sep xwindow
 modules-center = date sep Calendar
-modules-right = Settings sep  arrow sep volume sep power-set sep battery sep powermenu 
+modules-right = More sep  arrow sep volume sep xbacklight sep power-set sep battery sep powermenu 
+
+;alsa
+tray-position = 
+tray-padding = 2  
+;tray-background = #0063ff
+
+;wm-restack = bspwm
+wm-restack = i3
+
+scroll-up = i3wm-wsnext
+scroll-down = i3wm-wsprev
+cursor-click = pointer
+cursor-scroll =
+
+[bar/Mult_bar]
+
+pin-workspaces = true
+inherit = section/base
+width = 100%
+height = 30
+radius = 5
+fixed-center = true
+bottom = false
+enable-ipc = true
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 0
+line-color = ${colors.background-alt}
+
+border-size = 4
+border-color = #00000000
+
+padding-left = 2
+padding-right = 2
+
+font-0 = fixed:pixelsize=10;1
+font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+font-2 = SF Pro Display:pixelsize=10;1
+font-3 = JetBrainsMono Nerd Font:pixelsize=11;2
+font-4 = Noto Sans Regular: ;pixelsize = 10;3
+
+modules-left = appmenu sep i3 sep xwindow  
+modules-center = previous spotify next 
+modules-right = More sep volume sep power-set sep powermenu 
 
 ;alsa
 tray-position = 
@@ -112,239 +162,4 @@ wm-restack = i3
 scroll-up = i3wm-wsnext
 scroll-down = i3wm-wsprev
 cursor-click = pointer
-cursor-scroll =
 
-[module/Settings]
-type = custom/menu
-label-open = 漣  Settings
-label-close = 
-label-separator = //
-label-separator-padding = 1
-expand-right = true
-
-menu-0-0 =    Display
-menu-0-0-exec = #Settings.open.1
-menu-0-1 =     Wallpaper
-menu-0-1-exec = nitrogen
-menu-0-2 = Theme
-menu-0-2-exec = #Settings.open.2
-
-menu-1-0 =    Single
-menu-1-0-exec = .screenlayout/Single_mon.sh
-menu-1-1 =    Milti
-menu-1-1-exec = .screenlayout/Multi_mon.sh
-
-menu-2-0 =  Dark
-menu-2-0-exec = wal -i "$(grep -m1 'file=' ./.config/nitrogen/bg-saved.cfg | sed 's/file=//' | xargs echo -n)" -n
-menu-2-1 =   Light
-menu-2-1-exec = wal -i "$(grep -m1 'file=' ./.config/nitrogen/bg-saved.cfg | sed 's/file=//' | xargs echo -n)" -n -l
-
-[module/xwindow]
-type = internal/xwindow
-label = %title:0:35:...%
-label-foreground = ${colors.secondary}
-
-[module/sep]
-type = custom/text
-content = //
-content-foreground = ${colors.secondary}
-content-padding = 1
-
-[module/i3]
-type = internal/i3
-format = <label-state> <label-mode>
-format-font = 4
-index-sort = true
-wrapping-scroll = false
-
-ws-icon-0 = 1;ﲵ
-ws-icon-1 = 2;
-ws-icon-2 = 3;
-ws-icon-3 = 4;
-ws-icon-4 = 5;
-ws-icon-5 = 6; ﱄ
-ws-icon-default = 
-
-; Only show workspaces on the same output as the bar
-;pin-workspaces = true
-
-label-mode-padding = 2
-label-mode-foreground = #000
-label-mode-background = ${colors.primary}
-
-; focused = Active workspace on focused monitor
-label-focused = "%index%: %icon%"
-label-focused-background = ${colors.secondary}
-;label-focused-underline= ${colors.primary}
-label-focused-padding = 2
-
-; unfocused = Inactive workspace on any monitor
-label-unfocused = "%index%: %icon%"
-label-unfocused-padding = 2
-
-; visible = Active workspace on unfocused monitor
-label-visible = "%index%: %icon%"
-label-visible-background = ${colors.primary}
-;label-visible-background = ${self.label-focused-background}
-;label-visible-underline = ${self.label-focused-underline}
-label-visible-padding = ${self.label-focused-padding}
-
-; urgent = Workspace with urgency hint set
-label-urgent = "%index%: %icon%"
-label-urgent-background = ${colors.alert}
-label-urgent-padding = 1
-
-; Separator in between workspaces
-; label-separator = |
-
-[module/cpu]
-type = internal/cpu
-interval = 2
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #f90000
-label = %percentage:2%%
-
-[module/memory]
-type = internal/memory
-interval = 2
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #4bffdc
-label = %percentage_used%%
-
-[module/date]
-type = internal/date
-interval = 5
-
-click-right = /usr/bin/gnome-calendar
-
-date =
-date-alt = " %d-%m-%Y"
-
-time = %I:%M %p
-time-alt = %I:%M:%S %p
-
-format-prefix =   : 
-format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #0a6cf5
-
-label = %date% %time%
-
-[module/arrow]
-
-type = custom/script
-exec = echo ""
-click-left = bash ~/.config/polybar/tinybar.sh &
-click-right = bash ~/.config/polybar/killbar.sh &
-
-[module/volume]
-type = internal/pulseaudio
-click-right = /usr/bin/pavucontrol
-
-format-volume = <label-volume> 
-label-volume =    %percentage%%
-label-volume-foreground = ${colors.foreground}
-
-scroll-up = amixer -D pulse sset Master 5%+
-scroll-down = amixer -D pulse sset Master 5%-
-label-muted =    muted
-label-muted-foreground = #928374
-
-[module/battery]
-type = internal/battery
-battery = BAT0
-adapter = AC
-full-at = 99
-format-charging = <animation-charging>    <label-charging>
-format-charging-underline = #fb4934
-
-format-discharging = <ramp-capacity>    <label-discharging>
-format-discharging-underline = ${self.format-charging-underline}
-
-format-full-prefix = "   "
-format-full-prefix-foreground = ${colors.foreground-alt}
-format-full-underline = ${self.format-charging-underline}
-
-ramp-capacity-0 =    
-ramp-capacity-0-foreground = ${colors.alert}
-ramp-capacity-1 =   
-ramp-capacity-1-foreground = ${colors.alert}
-ramp-capacity-2 =   
-ramp-capacity-2-foreground = ${colors.primary}
-ramp-capacity-3 =   
-ramp-capacity-3-foreground = ${colors.healthy}
-ramp-capacity-4 =   
-ramp-capacity-4-foreground = ${colors.healthy}
-
-animation-charging-0 = "  " 
-animation-charging-1 = "    " 
-animation-charging-2 = "  "  
-animation-charging-3 = "    " 
-animation-charging-4 = "  "  
-animation-charging-foreground = ${colors.healthy}
-animation-charging-framerate = 800
-
-;animation-discharging-0 =    
-;animation-discharging-1 =   
-;animation-discharging-2 =      
-;animation-discharging-3 =   
-;animation-discharging-4 =   
-;animation-discharging-foreground = ${colors.foreground-alt}
-;animation-discharging-framerate = 750
-
-[module/temperature]
-type = internal/temperature
-thermal-zone = 0
-warn-temperature = 60
-
-format = <ramp> <label>
-format-underline = #f50a4d
-format-warn = <ramp> <label-warn>
-format-warn-underline = ${self.format-underline}
-
-label = %temperature-c%
-label-warn = %temperature-c%
-label-warn-foreground = ${colors.secondary}
-
-ramp-0 = 
-ramp-1 = 
-ramp-2 = 
-ramp-foreground = ${colors.foreground-alt}
-
-[module/appmenu]
-type = custom/text
-content =   pps
-content-foreground = ${colors.secondary}
-click-left=  rofi -modi drun -show drun -config ~/.config/rofi/rofidmenu.rasi
-
-[module/powermenu]
-type = custom/text
-content =     Power
-content-foreground = ${colors.alert}
-underline = #AA0000
-click-left = /home/suchinton/.config/i3/scripts/powermenu
-
-[module/power-set]
-type = custom/text
-content = "P-Profile"
-click-left = /home/suchinton/.config/i3/scripts/power-profiles
-
-[settings]
-screenchange-reload = true
-;compositing-background = xor
-;compositing-background = screen
-;compositing-foreground = screen
-;compositing-border = over
-pseudo-transparency = true
-
-[global/wm]
-margin-top = 5
-margin-bottom = 5
-
-[module/Calendar]
-type = custom/text
-content = "   Calendar"
-click-left = /usr/lib/brave-bin/brave --profile-directory=Default --app-id=kjbdgfilnfhdoflbpgamdcdgpehopbep
-
-; vim:ft=dosini

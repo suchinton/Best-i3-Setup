@@ -2,10 +2,10 @@
  * ROFI configs i3 Apps menu for EndeavourOS
  * Maintainer: joekamprad <joekamprad@endeavouros.com>
  *******************************************************/
-configuration {
-    font:				"SF Pro Rounded Regular 15";
+configuration { 
+    font:				"SF Pro Rounded Regular 13";
     show-icons:				true;
-    icon-theme:				"Zafiro-icons-Dark";
+    icon-theme:				"WhiteSur-dark";
     display-drun:			"Search";
     drun-display-format:		"{name}";
     scroll-method:			1;
@@ -24,12 +24,12 @@ configuration {
 window {
     background-color: @background;
     border-color: @separatorcolor;
-    border:           5;
-    padding:          30;
-    transparency:                   "real";    
-    transparency:                   "real";
+    border:           3;
+    padding:          10;
+    transparency:                   "real";   
     width:                          540px;
-    //y-offset:                           -100;
+    //y-offset:                           -155;
+    //x-offset:                       -510;
 }
 listview {
     lines:                              10;

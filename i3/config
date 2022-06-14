@@ -207,6 +207,9 @@ bindsym $mod+g floating toggle
 # open new empty workspace
 bindsym $mod+Shift+n exec ~/.config/i3/scripts/empty_workspace
 
+# Rofi menu to set display preference
+bindsym $mod+p exec export LC_ALL="C" && Pick_monitor.sh 
+
 # Multimedia Keys
 
 # volume
@@ -227,15 +230,17 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 # Redirect sound to headphones
-bindsym $mod+p exec /usr/local/bin/switch-audio-port
+#bindsym $mod+p exec /usr/local/bin/switch-audio-port
 
 ## App shortcuts
 bindsym $mod+w exec /usr/bin/brave
 bindsym $mod+n exec /usr/bin/nemo
 bindsym $mod+c exec /usr/bin/code
-bindsym Print exec scrot ~/%Y-%m-%d-%T-screenshot.png && notify-send "Screenshot saved to ~/$(date +"%Y-%m-%d-%T")-screenshot.png"
-bindsym $mod+s exec /usr/bin/spotify
-#bindsym $mod+u exec  nitrogen && wal -i "$(grep 'file=' ./.config/nitrogen/bg-saved.cfg | sed 's/file=//' | xargs echo -n)" && ~/ChromiumPywal/generate-theme.sh 
+bindsym $mod+s exec flatpak run com.spotify.Client
+
+# Screen Shots
+bindsym --release Print exec scrot ~/%Y-%m-%d-%T-screenshot.png && notify-send "Screenshot saved"
+bindsym --release $mod+Print scrot -u -b -s ~/%Y-%m-%d-%T-screenshot.png && notify-send "Screenshot saved"
 
 # Power Profiles menu switcher (rofi)
 bindsym $mod+Shift+p exec ~/.config/i3/scripts/power-profiles
@@ -259,11 +264,16 @@ set $ws9 "9"
 # use workspaces on different displays:
 # where you have to replace VGA-0/HDMI-0 with the names for your displays
 # you can get from xrandr command
-#workspace $ws1 output VGA-0
-#workspace $ws2 output VGA-0
-#workspace $ws3 output HDMI-0
-#workspace $ws4 output HDMI-0
-#workspace $ws5 output HDMI-0
+
+workspace $ws1 output HDMI1
+workspace $ws2 output HDMI1
+workspace $ws3 output HDMI1
+workspace $ws4 output HDMI1
+workspace $ws5 output eDP1
+workspace $ws6 output eDP1
+workspace $ws7 output eDP1
+workspace $ws8 output eDP1
+workspace $ws9 output eDP1
 
 # bind program to workspace and focus to them on startup:
 assign [class="Alacritty"] $ws1
@@ -280,7 +290,7 @@ for_window [class="Brave-browser" instance="crx_imgohncinckhbblnlmaedahepnnpmdma
 for_window [class="Brave-browser" instance="crx_agimnkijcaahngcdmfeangaknmldooml"] move to workspace $ws6 #Youtbe
 for_window [class="Brave-browser" instance="crx_cbmdempmfiieojfgeoakgffdlpihakdo"] move to workspace $ws6 #Disney+
 for_window [class="Spotify"] move to workspace $ws6
-assign [class="WebApp-Netflix0960"] $ws6
+assign [class="WebApp-Netflix5543"] $ws6
 assign [class="Stremio"] $ws6
 
 # automatic set focus new window if it opens on another workspace then the current:
@@ -297,8 +307,7 @@ for_window [class="Brave-browser" instance="crx_imgohncinckhbblnlmaedahepnnpmdma
 for_window [class="Brave-browser" instance="crx_agimnkijcaahngcdmfeangaknmldooml"] focus
 for_window [class="Brave-browser" instance="crx_cbmdempmfiieojfgeoakgffdlpihakdo"] focus
 for_window [class="Brave-browser" instance="crx_mjoklplbddabcmpepnokjaffbmgbkkgg"] focus
-for_window [class="Spotify"] focus
-for_window [class="WebApp-Netflix0960"] focus
+for_window [class="WebApp-Netflix5543"] focus
 for_window [class="Stremio"] focus
 
 ##############
@@ -334,7 +343,7 @@ exec_always --no-startup-id picom --experimental-backends -b --config ~/.config/
 # Polybar Launcher #
 ####################
 
-exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec_always --no-startup-id sleep 2 && ~/.config/polybar/launch.sh
 
 #############################################
 # autostart applications/services on login: #
@@ -342,7 +351,8 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 #get auth work with polkit-gnome
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec --no-startup-id wal -i "$(grep -m1 'file=' ./.config/nitrogen/bg-saved.cfg | sed 's/file=//' | xargs echo -n)" -n
+
+
 # dex execute .desktop files
 # keep in mind that it can cause issues
 # when second to i3 a DE is installed or mixed usage of i3 + xfce4 or GNOME
@@ -364,10 +374,13 @@ exec --no-startup-id dex --autostart --environment i3
 
 # start a script to setup displays
 # uncomment the next line, use arandr to setup displays and save the file as monitor:
-exec --no-startup-id ~/.screenlayout/monitor.sh
+#exec_always --no-startup-id bash ~/.screenlayout/monitor.sh
 
 # set wallpaper
-exec --no-startup-id sleep 2 && nitrogen --restore
+bindsym $mod+u exec nitrogen --restore && sleep 2 && wal -i "$(grep -m1 'file=' ./.config/nitrogen/bg-saved.cfg | sed 's/file=//' | xargs echo -n)" -n
+
+exec --no-startup-id nitrogen --restore
+exec --no-startup-id wal -i "$(grep -m1 'file=' ./.config/nitrogen/bg-saved.cfg | sed 's/file=//' | xargs echo -n)" -n
 #exec --no-startup-id feh --bg-fill /usr/share/endeavouros/backgrounds/endeavouros_i3.png
 
 # set powersavings for display:
@@ -415,6 +428,9 @@ exec --no-startup-id dbus-launch dunst --config ~/.config/dunst/dunstrc
 
 # clipman-applet
 #exec --no-startup-id xfce4-clipman
+
+# KDE-connect applet
+exec_always --no-startup-id flaflatpak run com.github.bajoja.indicator-kdeconnect
 
 ##################
 # floating rules #
@@ -549,9 +565,6 @@ bindsym $mod+space exec rofi -modi drun -show drun -config ~/.config/rofi/rofidm
 
 bindsym $mod+Tab exec rofi -show window \
 		-config ~/.config/rofi/rofidmenu.rasi
-
-#bindsym F10 exec rofi -show window \
-#		-config ~/.config/rofi/rofidmenu.rasi
 
 ## rofi bindings to manage clipboard (install rofi-greenclip from the AUR)
 
